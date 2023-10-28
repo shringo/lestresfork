@@ -4,8 +4,8 @@ import "leaflet/dist/leaflet.css";
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-// import geoJsonData from './geoJSON.json'
-import mapData from './_geoJSON.json'
+// import geoJsonData from './_geoJSON.json'
+import mapData from './geoJSON.json'
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -57,6 +57,13 @@ const LeafletMap: React.FC = () => {
                             const address = feature.properties.address;
                             const marker = L.marker(latlng, {
                                 title: name,
+                            });
+
+                            marker.on('click', function () {
+                                document.querySelectorAll('p').forEach(allP => allP.remove())
+                                const pElement = document.createElement("p");
+                                pElement.textContent = `${name} \n ${address}`;
+                                document.body.appendChild(pElement);
                             });
 
                             marker.bindPopup(name + `<br/>` + address);

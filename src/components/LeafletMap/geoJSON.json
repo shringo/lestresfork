@@ -1,0 +1,201 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -158.18495738,
+                    21.43599627
+                ]
+            },
+            "properties": {
+                "name": "WAIANAE DISTRICT COMPREHENSIVE HEALTH AND HOSPITAL BOARD, INCORPORATED",
+                "address": "86-260 Farrington Hwy"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -159.37008825,
+                    21.97462097
+                ]
+            },
+            "properties": {
+                "name": "HO-OLA LAHUI HAWAII INC",
+                "address": "4491 Rice St STE 106"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -157.71430488,
+                    21.34685884
+                ]
+            },
+            "properties": {
+                "name": "WAIMANALO HEALTH CENTER",
+                "address": "41-1347 Kalanianaole Hwy"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -155.98219987,
+                    19.66893538
+                ]
+            },
+            "properties": {
+                "name": "West Hawaii Community Health Center Inc",
+                "address": "75-5751 Kuakini Hwy STE 203"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -158.03119329,
+                    21.4953761
+                ]
+            },
+            "properties": {
+                "name": "THE WAHIAWA CENTER FOR COMMUNITY HEALTH",
+                "address": "302 CALIFORNIA AVE STE 106"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -157.87439051,
+                    21.34080702
+                ]
+            },
+            "properties": {
+                "name": "Kokua Kalihi Valley (Comprehensive Family Services)",
+                "address": "2239 N School St"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -155.47065453,
+                    20.07613912
+                ]
+            },
+            "properties": {
+                "name": "HAMAKUA HEALTH CENTER INC",
+                "address": "45-549 Plumeria St"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -157.82752897,
+                    21.29341398
+                ]
+            },
+            "properties": {
+                "name": "Waikiki Health",
+                "address": "277 Ohua Ave"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -156.92118154,
+                    20.82664096
+                ]
+            },
+            "properties": {
+                "name": "LANAI COMMUNITY HEALTH CENTER",
+                "address": "333 6th St"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -157.94717066,
+                    21.67625556
+                ]
+            },
+            "properties": {
+                "name": "KO'OLAULOA HEALTH CENTER",
+                "address": "56-119 Pualalea St"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -156.68439077,
+                    20.90512039
+                ]
+            },
+            "properties": {
+                "name": "COMMUNITY CLINIC OF MAUI",
+                "address": "1881 Nani St"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -157.86711863,
+                    21.31663223
+                ]
+            },
+            "properties": {
+                "name": "KALIHI PALAMA HEALTH CENTER",
+                "address": "915 N King St"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -157.01854665,
+                    21.08629321
+                ]
+            },
+            "properties": {
+                "name": "MOLOKAI OHANA HEALTH CARE INC",
+                "address": "30 Oki Pl"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -155.99427423,
+                    20.76394697
+                ]
+            },
+            "properties": {
+                "name": "HANA HEALTH",
+                "address": "4590 Hana Hwy"
+            }
+        }
+    ]
+}
