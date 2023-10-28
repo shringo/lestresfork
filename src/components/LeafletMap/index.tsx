@@ -4,7 +4,8 @@ import "leaflet/dist/leaflet.css";
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import geoJsonData from './geoJSON.json'
+// import geoJsonData from './geoJSON.json'
+import mapData from './_geoJSON.json'
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -42,15 +43,15 @@ const LeafletMap: React.FC = () => {
 
                     map.on('locationerror', onLocationError);
 
-                    const fetchGeoJsonData = async () => {
-                        const response = await fetch("./geoJSON.json");
-                        const data = await response.json();
-                        return data;
-                    };
+                    // const fetchGeoJsonData = async () => {
+                    //     const response = await fetch("./geoJSON.json");
+                    //     const data = await response.json();
+                    //     return data;
+                    // };
 
-                    const geoJsonData = await fetchGeoJsonData();
+                    // const geoJsonData = await fetchGeoJsonData();
 
-                    const geoJSONLayer = L.geoJSON(geoJsonData, {
+                    const geoJSONLayer = L.geoJSON(mapData, {
                         pointToLayer: (feature, latlng) => {
                             const name = feature.properties.name;
                             const address = feature.properties.address;
