@@ -41,7 +41,7 @@ async function main() {
     try {
         const data = await getDataFromPrisma();
 
-        await fs.writeFile('src/components/LeafletMap/geoJSON.geojson', JSON.stringify(data));
+        await fs.writeFile('src/components/LeafletMap/geoJSON.json', JSON.stringify(data));
 
         console.log('JSON file created successfully');
         prisma.$disconnect();

@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import geoJsonData from './geoJSON.json'
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -16,7 +17,7 @@ const LeafletMap: React.FC = () => {
     const mapRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const initializeMap = () => {
+        const initializeMap = async () => {
             try {
                 if (mapRef.current) {
                     const map = L.map(mapRef.current).setView([21.306944, -157.858337], 13);
@@ -41,32 +42,77 @@ const LeafletMap: React.FC = () => {
 
                     map.on('locationerror', onLocationError);
 
-                    async function fetchGeoJsonData() {
-                        const response = await fetch('./geoJSON.geojson');
+                    const fetchGeoJsonData = async () => {
+                        const response = await fetch("./geoJSON.json");
                         const data = await response.json();
                         return data;
-                    }
+                    };
 
-                    async function createGeoJsonLayer() {
-                        const geoJsonData = await fetchGeoJsonData();
-                        const geoJSONLayer = L.geoJSON(geoJsonData, {
-                            pointToLayer: function (feature, latlng) {
-                                const name = feature.properties.name;
-                                const address = feature.properties.address
-                                const marker = L.marker(latlng, {
-                                    title: name,
-                                });
-    
-                                marker.bindPopup(name + `<br/>` + address);
-    
-                                return marker;
-                            },
-                            coordsToLatLng: function (coords) {
-                                return new L.LatLng(coords[1], coords[0], coords[2]);
-                            }
-                        }); geoJSONLayer.addTo(map);
-                    }
-                    createGeoJsonLayer();
+                    const geoJsonData = await fetchGeoJsonData();
+
+                    const geoJSONLayer = L.geoJSON(geoJsonData, {
+                        pointToLayer: (feature, latlng) => {
+                            const name = feature.properties.name;
+                            const address = feature.properties.address;
+                            const marker = L.marker(latlng, {
+                                title: name,
+                            });
+
+                            marker.bindPopup(name + `<br/>` + address);
+
+                            return marker;
+                        },
+                        coordsToLatLng: (coords) => {
+                            return new L.LatLng(coords[1], coords[0], coords[2]);
+                        },
+                    });
+
+                    geoJSONLayer.addTo(map);
+
+                    // axios.get('./geoJSON')
+                    //     .then(function (response) {
+                    //         // Create a Leaflet GeoJSON layer using the response data
+                    //         var geojsonLayer = L.geoJSON(response.data).addTo(map);
+
+                    //         // Fit the map bounds to the GeoJSON layer
+                    //         map.fitBounds(geojsonLayer.getBounds());
+                    //     })
+                    //     .catch(function (error) {
+                    //         console.error('Error loading GeoJSON file:', error);
+                    //     });
+
+                    // async function fetchGeoJsonData() {
+                    //     const response = await axios.get('src/components/LeafletMap/geoJSON.geojson');
+                    //     const data = response.data;
+                    //     return data;
+                    // }
+
+                    // async function createGeoJsonLayer() {
+
+                    //     const geoJsonData = await fetchGeoJsonData();
+
+                    //     const geoJSONLayer = L.geoJSON(geoJsonData, {
+                    //         pointToLayer: (feature, latlng) => {
+                    //             const name = feature.properties.name;
+                    //             const address = feature.properties.address;
+                    //             const marker = L.marker(latlng, {
+                    //                 title: name,
+                    //             });
+
+                    //             marker.bindPopup(name + `<br/>` + address);
+
+                    //             return marker;
+                    //         },
+                    //         coordsToLatLng: (coords) => {
+                    //             return new L.LatLng(coords[1], coords[0], coords[2]);
+                    //         },
+                    //     });
+
+                    //     geoJSONLayer.addTo(map);
+                    // }
+                    // createGeoJsonLayer();
+
+
                 }
             } catch (error) {
                 console.log("Error initializing map:", error);
