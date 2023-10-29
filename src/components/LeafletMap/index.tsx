@@ -7,7 +7,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { api } from "../../utils/api";
 
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon.src,
     iconRetinaUrl: markerIcon2x.src,
@@ -18,12 +18,12 @@ const LeafletMap: React.FC = () => {
     const mapRef = useRef<HTMLDivElement>(null);
     const grabData = api.dataExport.getAll.useQuery().data;
     useEffect(() => {
-        const initializeMap = async () => {
+        const initializeMap = () => {
             try {
                 if (mapRef.current) {
                     if (grabData) {
                         const geoJsonLayer = L.geoJSON(grabData, {
-                            pointToLayer: (feature, latlng) => {
+                            pointToLayer: (feature:GeoJSON.Feature<GeoJSON.Geometry, Record<string,string>>, latlng) => {
                                 const name = feature.properties.name;
                                 const address = feature.properties.address;
                                 const marker = L.marker(latlng, { title: name });

@@ -1,13 +1,11 @@
-const { PrismaClient } = require("@prisma/client");
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from 'zod'
+import { db } from "~/server/db";
 
-const prisma = new PrismaClient();
-
-async function getDataFromPrisma() {
-    const allData = await prisma.centers.findMany();
+async function getDataFromPrisma(): Promise<GeoJSON.FeatureCollection> {
+    const allData = await db.centers.findMany();
     const uniqueNames = new Set();
-    const features = allData
+    const features: GeoJSON.Feature[] = allData
         .filter((entry: {
             Health_Center_Organization_Street_Address: string
         }) => {
@@ -40,9 +38,9 @@ async function getDataFromPrisma() {
             };
         });
 
-    const geojson = {
+    const geojson: GeoJSON.FeatureCollection = {
         type: "FeatureCollection",
-        features: features,
+        features,
     };
 
     return geojson;
@@ -66,9 +64,7 @@ const dataExport = createTRPCRouter({
                 }
             });
         }),
-    getAll: publicProcedure.query(() => {
-        return getDataFromPrisma()
-    })
+    getAll: publicProcedure.query(() => getDataFromPrisma())
 });
 
 export default dataExport;
