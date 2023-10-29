@@ -21,8 +21,30 @@ const LeafletMap: React.FC = () => {
         const initializeMap = async () => {
             try {
                 if (mapRef.current) {
-                    const map = L.map(mapRef.current).setView([21.306944, -157.858337], 13);
+                    if (grabData) {
+                        const geoJsonLayer = L.geoJSON(grabData, {
+                            pointToLayer: (feature, latlng) => {
+                                const name = feature.properties.name;
+                                const address = feature.properties.address;
+                                const marker = L.marker(latlng, { title: name });
     
+                                marker.on('click', function () {
+                                    document.querySelectorAll('p').forEach(allP => allP.remove());
+    
+                                    const pElement = document.createElement("p");
+                                    pElement.textContent = `${name} \n ${address}`;
+                                    document.body.appendChild(pElement);
+                                });
+    
+                                marker.bindPopup(name + `<br/>` + address);
+                                return marker;
+                            },
+                            coordsToLatLng: (coords) => {
+                                return new L.LatLng(coords[1], coords[0], coords[2]);
+                            },
+                        });
+                    const map = L.map(mapRef.current).setView([21.306944, -157.858337], 13);
+                    geoJsonLayer.addTo(map)
                     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
                         maxZoom: 18,
@@ -43,29 +65,6 @@ const LeafletMap: React.FC = () => {
                     }
     
                     map.on('locationerror', onLocationError);
-    
-                    if (grabData) {
-                        L.geoJSON(grabData, {
-                            pointToLayer: (feature, latlng) => {
-                                const name = feature.properties.name;
-                                const address = feature.properties.address;
-                                const marker = L.marker(latlng, { title: name });
-    
-                                marker.on('click', function () {
-                                    document.querySelectorAll('p').forEach(allP => allP.remove());
-    
-                                    const pElement = document.createElement("p");
-                                    pElement.textContent = `${name} \n ${address}`;
-                                    document.body.appendChild(pElement);
-                                });
-    
-                                marker.bindPopup(name + `<br/>` + address);
-                                return marker;
-                            },
-                            coordsToLatLng: (coords) => {
-                                return new L.LatLng(coords[1], coords[0], coords[2]);
-                            },
-                        }).addTo(map);
                     }
                 }
             } catch (error) {
