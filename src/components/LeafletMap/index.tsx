@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
-import L, { IconOptions, LeafletMouseEvent, LocationEvent, ErrorEvent } from "leaflet";
+import React, { useRef, useEffect } from "react";
+import L, { type LocationEvent, type ErrorEvent } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
