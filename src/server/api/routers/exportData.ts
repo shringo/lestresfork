@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
-const fs = require("fs/promises");
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { z } from 'zod'
 
 const prisma = new PrismaClient();
 
@@ -10,9 +11,8 @@ async function getDataFromPrisma() {
         .filter((entry: {
             Health_Center_Organization_Street_Address: string
         }) => {
-            // Check if the Health_Center_Name is already seen
             if (uniqueNames.has(entry.Health_Center_Organization_Street_Address)) {
-                return false; // Ignore duplicates
+                return false;
             }
             uniqueNames.add(entry.Health_Center_Organization_Street_Address);
             return true;
@@ -47,24 +47,28 @@ async function getDataFromPrisma() {
 
     return geojson;
 }
+const dataExport = createTRPCRouter({
+    lat: publicProcedure
+        .input(z.object({ Geocoding_Artifact_Address_Primary_X_Coordinate: z.number() }))
+        .query(({ ctx, input }) => {
+            return ctx.db.centers.findMany({
+                where: {
+                    Geocoding_Artifact_Address_Primary_X_Coordinate: input.Geocoding_Artifact_Address_Primary_X_Coordinate
+                }
+            });
+        }),
+    lng: publicProcedure
+        .input(z.object({ Geocoding_Artifact_Address_Primary_Y_Coordinate: z.number() }))
+        .query(({ ctx, input }) => {
+            return ctx.db.centers.findMany({
+                where: {
+                    Geocoding_Artifact_Address_Primary_Y_Coordinate: input.Geocoding_Artifact_Address_Primary_Y_Coordinate
+                }
+            });
+        }),
+    getAll: publicProcedure.query(() => {
+        return getDataFromPrisma()
+    })
+});
 
-async function main() {
-    try {
-        const data = await getDataFromPrisma();
-
-        await fs.writeFile(
-            "src/components/LeafletMap/geoJSON.json",
-            JSON.stringify(data)
-        );
-
-        console.log("JSON file created successfully");
-        prisma.$disconnect();
-        process.exit(0);
-    } catch (error) {
-        console.error("Failed to fetch data from Prisma:", error);
-        prisma.$disconnect();
-        process.exit(1);
-    }
-}
-
-main();
+export default dataExport;

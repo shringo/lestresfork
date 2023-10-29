@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from "react";
-import L, { type LocationEvent, type ErrorEvent } from "leaflet";
+import L, { type LocationEvent, type ErrorEvent, geoJSON, map } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 // import geoJsonData from './_geoJSON.json'
-import mapData from './geoJSON.json'
+import { api } from "../../utils/api"
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -16,6 +16,7 @@ L.Icon.Default.mergeOptions({
 
 const LeafletMap: React.FC = () => {
     const mapRef = useRef<HTMLDivElement>(null);
+    const grabData = api.dataExport.getAll.useQuery().data;
 
     useEffect(() => {
         const initializeMap = async () => {
@@ -34,24 +35,14 @@ const LeafletMap: React.FC = () => {
                         L.marker(e.latlng).addTo(map).bindPopup(`You are within ${radius} meters from this point`)
                         L.circle(e.latlng, radius).addTo(map)
                     }
-
                     map.on('locationfound', onLocationFound);
 
                     function onLocationError(e: ErrorEvent) {
                         alert(e.message);
                     }
-
                     map.on('locationerror', onLocationError);
-
-                    // const fetchGeoJsonData = async () => {
-                    //     const response = await fetch("./geoJSON.json");
-                    //     const data = await response.json();
-                    //     return data;
-                    // };
-
-                    // const geoJsonData = await fetchGeoJsonData();
-
-                    const geoJSONLayer = L.geoJSON(mapData, {
+                    console.log(grabData)
+                    L.geoJSON(grabData, {
                         pointToLayer: (feature, latlng) => {
                             const name = feature.properties.name;
                             const address = feature.properties.address;
@@ -73,54 +64,7 @@ const LeafletMap: React.FC = () => {
                         coordsToLatLng: (coords) => {
                             return new L.LatLng(coords[1], coords[0], coords[2]);
                         },
-                    });
-
-                    geoJSONLayer.addTo(map);
-
-                    // axios.get('./geoJSON')
-                    //     .then(function (response) {
-                    //         // Create a Leaflet GeoJSON layer using the response data
-                    //         var geojsonLayer = L.geoJSON(response.data).addTo(map);
-
-                    //         // Fit the map bounds to the GeoJSON layer
-                    //         map.fitBounds(geojsonLayer.getBounds());
-                    //     })
-                    //     .catch(function (error) {
-                    //         console.error('Error loading GeoJSON file:', error);
-                    //     });
-
-                    // async function fetchGeoJsonData() {
-                    //     const response = await axios.get('src/components/LeafletMap/geoJSON.geojson');
-                    //     const data = response.data;
-                    //     return data;
-                    // }
-
-                    // async function createGeoJsonLayer() {
-
-                    //     const geoJsonData = await fetchGeoJsonData();
-
-                    //     const geoJSONLayer = L.geoJSON(geoJsonData, {
-                    //         pointToLayer: (feature, latlng) => {
-                    //             const name = feature.properties.name;
-                    //             const address = feature.properties.address;
-                    //             const marker = L.marker(latlng, {
-                    //                 title: name,
-                    //             });
-
-                    //             marker.bindPopup(name + `<br/>` + address);
-
-                    //             return marker;
-                    //         },
-                    //         coordsToLatLng: (coords) => {
-                    //             return new L.LatLng(coords[1], coords[0], coords[2]);
-                    //         },
-                    //     });
-
-                    //     geoJSONLayer.addTo(map);
-                    // }
-                    // createGeoJsonLayer();
-
-
+                    }).addTo(map);
                 }
             } catch (error) {
                 console.log("Error initializing map:", error);
